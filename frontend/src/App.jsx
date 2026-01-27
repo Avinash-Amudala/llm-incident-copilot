@@ -36,12 +36,12 @@ export default function App() {
         <div>
           <h1>🔍 LLM Incident Copilot</h1>
           <p className="header-subtitle">
-            Upload logs → ask questions → get evidence-based debugging guidance
+            AI-powered log analysis • Evidence-based debugging • Instant insights
           </p>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <span className={`stats-badge ${apiStatus === "connected" ? "success" : "error"}`}>
-            {apiStatus === "checking" ? "..." : apiStatus === "connected" ? "● API Connected" : "● API Offline"}
+            {apiStatus === "checking" ? "⏳ Connecting..." : apiStatus === "connected" ? "⚡ AI Ready" : "⚠️ Offline"}
           </span>
           <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
             {theme === "light" ? "🌙" : "☀️"}

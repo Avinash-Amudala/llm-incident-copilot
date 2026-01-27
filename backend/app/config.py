@@ -26,3 +26,7 @@ CORS_ORIGINS = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:5
 MAX_CHUNKS = int(os.getenv("MAX_CHUNKS", "50"))  # limit chunks to prevent timeouts
 EMBEDDING_CONCURRENCY = int(os.getenv("EMBEDDING_CONCURRENCY", "5"))  # parallel embedding calls
 
+# File size limits (in MB)
+MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", "50"))  # reject files larger than this
+WARN_FILE_SIZE_MB = int(os.getenv("WARN_FILE_SIZE_MB", "10"))  # warn for files larger than this
+

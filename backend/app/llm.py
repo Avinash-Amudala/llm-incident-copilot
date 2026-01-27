@@ -1,6 +1,7 @@
 import requests
 import logging
 import concurrent.futures
+import urllib3
 from typing import List
 from .config import (
     OLLAMA_BASE_URL, OLLAMA_MODEL, OLLAMA_EMBED_MODEL,
@@ -9,11 +10,17 @@ from .config import (
 
 logger = logging.getLogger(__name__)
 
+# Disable SSL warnings for corporate networks with proxy/MITM certificates
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 # connection pool for better performance
 session = requests.Session()
-adapter = requests.adapters.HTTPAdapter(pool_connections=20, pool_maxsize=20)
+adapter = requests.adapters.HTTPAdapter(pool_connections=20, pool_maxsize=20, max_retries=3)
 session.mount('http://', adapter)
 session.mount('https://', adapter)
+
+# Disable SSL verification for corporate networks (Groq API behind proxy)
+session.verify = False
 
 # thread pool for concurrent embedding
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=EMBEDDING_CONCURRENCY)

@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from .config import CORS_ORIGINS, MAX_CHUNKS
+from .config import CORS_ORIGINS, MAX_CHUNKS, MAX_FILE_SIZE_MB, WARN_FILE_SIZE_MB
 from .storage import save_upload
 from .ingest import chunk_text, detect_metadata, smart_chunk_logs, extract_log_stats
 from .llm import ollama_embed, ollama_chat, check_ollama_connection, get_available_models, get_inference_provider
@@ -14,8 +14,6 @@ from .models import (
 # configure logging to see what's happening
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-MAX_FILE_SIZE_MB = 10  # warn for files larger than this
 
 app = FastAPI(
     title="LLM Incident Copilot",
@@ -47,6 +45,8 @@ def health():
         "inference_provider": provider,
         "available_models": models[:5],
         "max_chunks": MAX_CHUNKS,
+        "max_file_size_mb": MAX_FILE_SIZE_MB,
+        "warn_file_size_mb": WARN_FILE_SIZE_MB,
     }
 
 
@@ -62,7 +62,17 @@ async def ingest(file: UploadFile = File(...)):
     file_size_mb = len(content) / (1024 * 1024)
     logger.info(f"Received file: {file.filename} ({file_size_mb:.2f} MB)")
 
+    # Reject files that are too large
     if file_size_mb > MAX_FILE_SIZE_MB:
+        logger.error(f"File too large: {file_size_mb:.2f} MB (max: {MAX_FILE_SIZE_MB} MB)")
+        raise HTTPException(
+            status_code=413,
+            detail=f"File too large ({file_size_mb:.1f} MB). Maximum allowed size is {MAX_FILE_SIZE_MB} MB. "
+                   f"Please split the file or filter to relevant time ranges."
+        )
+
+    # Warn for moderately large files
+    if file_size_mb > WARN_FILE_SIZE_MB:
         logger.warning(f"Large file detected ({file_size_mb:.2f} MB). Processing may take a while.")
 
     save_upload(file.filename, content)

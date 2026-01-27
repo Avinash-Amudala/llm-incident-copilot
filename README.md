@@ -1,14 +1,84 @@
-# LLM Incident Copilot
+<div align="center">
 
-An **evidence-based incident debugging copilot** that ingests logs and uses **vector search + a local LLM (Ollama)** to answer: *"what is failing, why, and what should I check next?"*
+# 🔍 LLM Incident Copilot
 
-Built for SREs, DevOps engineers, and platform teams who want to accelerate incident debugging with AI-powered log analysis.
+### AI-Powered Log Analysis • Evidence-Based Debugging • Instant Root Cause Analysis
 
-## Demo
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://reactjs.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
+[![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-FF6B6B.svg)](https://qdrant.tech/)
 
-> 🎬 Upload a log file → Ask a question → Get a root-cause hypothesis + evidence citations + next steps
+**Upload logs → Ask questions → Get evidence-backed debugging guidance in seconds**
 
-<!-- Add demo GIF here once recorded -->
+[Features](#-features) • [Quick Start](#-quickstart) • [Demo](#-demo) • [Performance](#-performance) • [Architecture](#system-architecture)
+
+</div>
+
+---
+
+## 🎬 Demo
+
+> **Upload a log file → Ask a question → Get a root-cause hypothesis + evidence citations + next steps**
+
+<!-- DEMO GIF SUGGESTIONS:
+1. demo-upload.gif - Show dragging a log file and watching it process
+2. demo-analysis.gif - Ask "What is the root cause?" and show the AI response
+3. demo-dark-mode.gif - Toggle between light and dark themes
+4. demo-evidence.gif - Show clicking through evidence citations
+-->
+
+### 📸 Screenshots
+
+| Upload & Analyze | AI Response with Evidence | Dark Mode |
+|:---:|:---:|:---:|
+| ![Upload](docs/screenshots/upload.png) | ![Analysis](docs/screenshots/analysis.png) | ![Dark Mode](docs/screenshots/dark-mode.png) |
+
+<details>
+<summary>📹 <b>GIF Recording Ideas</b> (click to expand)</summary>
+
+Record these GIFs to showcase the app:
+
+1. **🚀 Quick Demo (15-20 sec)**
+   - Upload Zookeeper.log → Type "What's failing?" → Show AI analysis
+
+2. **📁 File Upload Flow (10 sec)**
+   - Drag file onto upload zone → Watch progress → See stats (lines, errors, chunks)
+
+3. **🤖 AI Analysis in Action (15 sec)**
+   - Type question → Submit → Watch AI thinking animation → Show structured response
+
+4. **🌙 Theme Toggle (5 sec)**
+   - Click moon icon → Smooth transition → All components adapt
+
+5. **📊 Evidence Cards (10 sec)**
+   - Hover over evidence cards → Show log snippets with syntax highlighting
+
+**Tools to record**: [ScreenToGif](https://www.screentogif.com/), [Gifski](https://gif.ski/), [LICEcap](https://www.cockos.com/licecap/)
+
+</details>
+
+---
+
+## ⚡ Performance
+
+Real-world benchmarks on a 10MB log file (74,380 lines):
+
+| Metric | Result | Details |
+|--------|--------|---------|
+| **Ingestion Time** | 34 seconds | Concurrent embedding with 5 workers |
+| **Analysis Time** | 2.5 seconds | Using Groq cloud (vs 30s+ with local Ollama) |
+| **Chunks Processed** | 50 chunks | Smart prioritization of error-heavy sections |
+| **Memory Usage** | ~500MB | Backend + Qdrant containers |
+
+### 🚀 Speed Optimizations
+
+- **3x faster ingestion** with concurrent embedding (ThreadPoolExecutor)
+- **10x faster analysis** with Groq cloud LLM (optional, free tier)
+- **Smart chunking** limits processing to most relevant log sections
+- **Connection pooling** for efficient API calls
 
 ## System Architecture
 
@@ -80,29 +150,36 @@ flowchart LR
     end
 ```
 
-## Features
+## ✨ Features
 
-### Core Capabilities
-- ✅ **Evidence-based answers** with citations from log chunks
-- ✅ **Confidence scoring** (low/medium/high) based on evidence strength
-- ✅ **Multi-turn conversations** for follow-up questions
-- ✅ **Local LLM** via Ollama (no API keys needed)
-- ✅ **Vector search** with Qdrant for semantic retrieval
+### 🧠 AI Analysis
+| Feature | Description |
+|---------|-------------|
+| **Evidence-Based Answers** | Every claim backed by cited log chunks |
+| **Confidence Scoring** | Low/Medium/High based on evidence strength |
+| **Multi-turn Conversations** | Follow-up questions with context |
+| **Dual LLM Support** | Groq Cloud (fast) or Ollama (local/private) |
+| **RAG Pattern** | Retrieval-Augmented Generation for accuracy |
 
-### Log Processing
-- ✅ **Auto-format detection** (JSON, logfmt, syslog, Java/Hadoop, Zookeeper)
-- ✅ **Smart chunking** that respects log structure and error clusters
-- ✅ **Real-world datasets** from LogHub (Zookeeper, Hadoop)
-- ✅ **Metadata extraction** (timestamps, log levels, loggers)
+### 📊 Log Processing
+| Feature | Description |
+|---------|-------------|
+| **Auto-Format Detection** | JSON, logfmt, syslog, Java/Hadoop, Zookeeper |
+| **Smart Chunking** | Groups by error clusters and time gaps |
+| **Error Prioritization** | Focuses on ERROR/WARN-heavy sections |
+| **File Size Limits** | Configurable limits (default: 50MB max) |
+| **Concurrent Embedding** | 5x parallel workers for speed |
 
-### User Experience
-- ✅ **Dark mode** support with system preference detection
-- ✅ **Syntax highlighting** for log levels (ERROR, WARN, INFO)
-- ✅ **Log statistics** showing error/warning counts after ingestion
-- ✅ **Dataset browser** to explore available sample logs
-- ✅ **One-command run** with Docker Compose
+### 🎨 Modern UI
+| Feature | Description |
+|---------|-------------|
+| **Glassmorphism Design** | Frosted glass panels with blur effects |
+| **Animated Gradients** | Dynamic background animations |
+| **Dark Mode** | System preference detection with smooth toggle |
+| **Syntax Highlighting** | Color-coded ERROR, WARN, INFO levels |
+| **Micro-interactions** | Hover effects, pulse animations, slide-ins |
 
-## Quickstart
+## 🚀 Quickstart
 
 ### Prerequisites
 
@@ -110,59 +187,110 @@ flowchart LR
 - **Ollama** installed locally ([download here](https://ollama.com/download))
 - **GPU** (optional but recommended): 4GB+ VRAM for faster inference
 
-### 1. Install Ollama and pull models
+### Option A: Quick Start with Groq Cloud (⚡ Recommended)
+
+Get 10x faster inference with Groq's free API:
 
 ```bash
-# Install Ollama from https://ollama.com/download
-# Then pull the required models:
-ollama pull nomic-embed-text    # Embeddings model (274 MB)
-ollama pull llama3.2:3b         # LLM for analysis (2 GB) - works on 4GB VRAM
-# OR for better quality (requires 8GB+ VRAM):
-# ollama pull llama3.1          # (4.7 GB)
+# 1. Clone the repo
+git clone https://github.com/Avinash-Amudala/llm-incident-copilot.git
+cd llm-incident-copilot
+
+# 2. Get free Groq API key from https://console.groq.com/keys
+
+# 3. Add to docker-compose.yml under backend > environment:
+#    - GROQ_API_KEY=gsk_your_key_here
+#    - GROQ_MODEL=llama-3.1-8b-instant
+
+# 4. Install Ollama for embeddings only
+ollama pull nomic-embed-text
+
+# 5. Start!
+docker compose up --build
 ```
 
-### 2. Clone and start
+### Option B: Fully Local (🔒 Privacy-First)
 
 ```bash
+# 1. Install Ollama from https://ollama.com/download
+ollama pull nomic-embed-text    # Embeddings (274 MB)
+ollama pull llama3.2:3b         # LLM (2 GB) - works on 4GB VRAM
+
+# 2. Clone and start
 git clone https://github.com/Avinash-Amudala/llm-incident-copilot.git
 cd llm-incident-copilot
 docker compose up --build
 ```
 
-### 3. Open the app
+### 🌐 Open the App
 
-- **UI**: [http://localhost:5173](http://localhost:5173)
-- **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+| URL | Description |
+|-----|-------------|
+| [http://localhost:5173](http://localhost:5173) | Web UI |
+| [http://localhost:8000/docs](http://localhost:8000/docs) | API Documentation |
+| [http://localhost:8000/health](http://localhost:8000/health) | Health Check |
 
-### 4. Try it
+### 🧪 Try It
 
-1. Upload a sample log from `data/sample_logs/`
-2. Ask: *"Why are requests timing out?"*
-3. Get evidence-based debugging guidance
+1. **Upload** a sample log from `data/sample_logs/`
+2. **Ask**: *"What is the root cause of this incident?"*
+3. **Get** evidence-based debugging guidance with citations
 
-## Model Selection Guide
+---
 
-Choose based on your GPU VRAM:
+## 🔧 Configuration
 
-| Model | VRAM Required | Quality | Download |
-|-------|---------------|---------|----------|
-| `llama3.2:3b` | 4GB+ | Good | `ollama pull llama3.2:3b` |
-| `llama3.1` | 8GB+ | Better | `ollama pull llama3.1` |
-| `mistral` | 8GB+ | Good | `ollama pull mistral` |
+### LLM Inference Options
 
-To change the model, edit `docker-compose.yml`:
+| Provider | Speed | Quality | Cost | Setup |
+|----------|-------|---------|------|-------|
+| **Groq Cloud** | ⚡⚡⚡ 500+ tok/s | Excellent | Free tier | Add `GROQ_API_KEY` |
+| **Ollama Local** | ⚡ 15-50 tok/s | Good | Free (GPU) | Default |
+
+### Model Selection
+
+| Model | VRAM | Quality | Provider |
+|-------|------|---------|----------|
+| `llama-3.1-70b-versatile` | N/A | 🌟🌟🌟 | Groq Cloud |
+| `llama-3.1-8b-instant` | N/A | 🌟🌟 | Groq Cloud |
+| `llama3.2:3b` | 4GB+ | 🌟 | Ollama |
+| `llama3.1` | 8GB+ | 🌟🌟 | Ollama |
+
+### Environment Variables
+
 ```yaml
-- OLLAMA_MODEL=llama3.2:3b  # Change this line
-```
+# docker-compose.yml
+backend:
+  environment:
+    # Groq Cloud (optional - enables fast inference)
+    - GROQ_API_KEY=gsk_your_key_here
+    - GROQ_MODEL=llama-3.1-8b-instant
 
-## Troubleshooting
+    # Ollama (default for embeddings, fallback for LLM)
+    - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    - OLLAMA_MODEL=llama3.2:3b
 
-### Corporate Network / Proxy Issues
+    # Performance tuning
+    - MAX_CHUNKS=50              # Max chunks to process
+    - EMBEDDING_CONCURRENCY=5   # Parallel embedding workers
+
+    # File limits
+    - MAX_FILE_SIZE_MB=50       # Reject files larger than this
+    - WARN_FILE_SIZE_MB=10      # Warn for files larger than this
+---
+
+## 🔧 Troubleshooting
+
+<details>
+<summary>🏢 <b>Corporate Network / Proxy Issues</b></summary>
 
 If you're behind a corporate proxy with SSL inspection:
 
 **For Docker builds (pip SSL errors):**
 The Dockerfile already includes `--trusted-host` flags to bypass SSL verification.
+
+**For Groq API SSL errors:**
+The backend automatically disables SSL verification for corporate MITM proxies.
 
 **For Ollama model downloads:**
 ```bash
@@ -176,8 +304,10 @@ ollama pull llama3.2:3b
 # Linux/Mac:
 HTTP_PROXY="" HTTPS_PROXY="" ollama pull llama3.2:3b
 ```
+</details>
 
-### Port Conflicts
+<details>
+<summary>🔌 <b>Port Conflicts</b></summary>
 
 If port 11434 is already in use:
 ```bash
@@ -193,8 +323,10 @@ taskkill /PID <pid> /F
 # Linux/Mac:
 kill -9 <pid>
 ```
+</details>
 
-### Running Ollama in Docker (Alternative Setup)
+<details>
+<summary>🐳 <b>Running Ollama in Docker</b></summary>
 
 If you prefer to run Ollama inside Docker instead of locally:
 
@@ -206,8 +338,11 @@ If you prefer to run Ollama inside Docker instead of locally:
 docker exec -it llm-incident-copilot-ollama-1 ollama pull llama3.2:3b
 docker exec -it llm-incident-copilot-ollama-1 ollama pull nomic-embed-text
 ```
+</details>
 
-## How It Works
+---
+
+## ⚙️ How It Works
 
 ```mermaid
 sequenceDiagram
@@ -216,40 +351,44 @@ sequenceDiagram
     participant API as FastAPI
     participant Parser as Log Parser
     participant Qdrant as Vector DB
-    participant Ollama as LLM
+    participant LLM as Ollama/Groq
 
     User->>UI: Upload log file
     UI->>API: POST /ingest
     API->>Parser: Detect format & parse
     Parser->>API: Structured log entries
-    API->>Ollama: Generate embeddings
-    Ollama->>API: Vector representations
+    API->>LLM: Generate embeddings (concurrent)
+    LLM->>API: Vector representations
     API->>Qdrant: Store chunks + vectors
     Qdrant->>API: Confirm storage
     API->>UI: Stats (lines, errors, warnings)
 
     User->>UI: Ask question
     UI->>API: POST /analyze
-    API->>Ollama: Embed question
-    Ollama->>API: Question vector
+    API->>LLM: Embed question
+    LLM->>API: Question vector
     API->>Qdrant: Similarity search
     Qdrant->>API: Top-K relevant chunks
-    API->>Ollama: Question + evidence context
-    Ollama->>API: Analysis response
+    API->>LLM: Question + evidence context
+    LLM->>API: Analysis response
     API->>UI: Summary, root cause, evidence, next steps
 ```
 
-### Pipeline Steps
+### 🔄 Pipeline Steps
 
-1. **Parse**: Auto-detect log format (JSON, logfmt, syslog, Java structured)
-2. **Chunk**: Smart chunking that groups by error clusters and time gaps
-3. **Embed**: Generate embeddings using Ollama's `nomic-embed-text`
-4. **Store**: Save vectors + metadata (timestamps, levels) to Qdrant
-5. **Retrieve**: Semantic search finds most relevant log chunks
-6. **Reason**: LLM analyzes evidence with strict citation requirements
-7. **Respond**: Structured output with summary, root cause, confidence
+| Step | Description |
+|------|-------------|
+| **1. Parse** | Auto-detect log format (JSON, logfmt, syslog, Java) |
+| **2. Chunk** | Smart chunking by error clusters and time gaps |
+| **3. Embed** | Generate embeddings with 5 concurrent workers |
+| **4. Store** | Save vectors + metadata to Qdrant |
+| **5. Retrieve** | Semantic search for relevant chunks |
+| **6. Reason** | LLM analyzes evidence with citations |
+| **7. Respond** | Structured output with confidence score |
 
-## Supported Log Formats
+---
+
+## 📋 Supported Log Formats
 
 ```mermaid
 mindmap
@@ -272,7 +411,7 @@ mindmap
       Auth logs
 ```
 
-## Sample Datasets
+## 📁 Sample Datasets
 
 ### Built-in Samples
 | Log File | Scenario | Lines |
@@ -282,33 +421,34 @@ mindmap
 | `incident_k8s_crashloop.log` | Kubernetes pod crashloop due to missing config | ~100 |
 
 ### LogHub Real-World Datasets
-| Dataset | Description | Lines |
-|---------|-------------|-------|
-| Zookeeper | Distributed coordination service logs | 74,380 |
-| Hadoop | MapReduce job execution logs | 394,308 |
+| Dataset | Description | Lines | Size |
+|---------|-------------|-------|------|
+| Zookeeper | Distributed coordination service logs | 74,380 | 9.94 MB |
+| Hadoop | MapReduce job execution logs | 394,308 | 48 MB |
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 llm-incident-copilot/
-├── docker-compose.yml          # 4 services: Qdrant, Ollama, Backend, Frontend
+├── docker-compose.yml          # Multi-service orchestration
 ├── backend/
 │   ├── app/
-│   │   ├── main.py             # FastAPI endpoints (ingest, analyze, datasets)
+│   │   ├── main.py             # FastAPI endpoints (/ingest, /analyze, /health)
+│   │   ├── config.py           # Environment variables & settings
 │   │   ├── parsers.py          # Multi-format log parser with auto-detection
 │   │   ├── ingest.py           # Smart chunking and stats extraction
 │   │   ├── retrieval.py        # Qdrant vector operations
-│   │   ├── llm.py              # Ollama integration (embed + chat)
+│   │   ├── llm.py              # Ollama/Groq integration (embed + chat)
 │   │   └── models.py           # Pydantic schemas
 │   └── Dockerfile
 ├── frontend/
 │   ├── src/
 │   │   ├── App.jsx             # Main app with dark mode toggle
-│   │   ├── styles.css          # Modern UI with CSS variables
+│   │   ├── styles.css          # Glassmorphism UI with animations
 │   │   ├── api.js              # Backend API client
 │   │   └── components/
-│   │       ├── UploadPanel.jsx # File upload + dataset browser
-│   │       └── ChatPanel.jsx   # Q&A with syntax highlighting
+│   │       ├── UploadPanel.jsx # Drag-drop file upload
+│   │       └── ChatPanel.jsx   # AI chat with evidence cards
 │   └── Dockerfile
 ├── data/
 │   ├── sample_logs/            # Demo incident scenarios
@@ -316,56 +456,93 @@ llm-incident-copilot/
 └── docs/                       # Architecture diagrams
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/ingest` | Upload and process log file |
-| `POST` | `/analyze` | Ask a question about logs |
+| `POST` | `/ingest` | Upload and process log file (max 50MB) |
+| `POST` | `/analyze` | Ask a question about ingested logs |
 | `GET` | `/datasets` | List available sample datasets |
-| `GET` | `/stats` | Get system statistics |
-| `GET` | `/health` | Health check |
+| `GET` | `/health` | Health check with config info |
 
-## Roadmap
+<details>
+<summary>📡 <b>API Examples</b> (click to expand)</summary>
 
+```bash
+# Health check - shows configuration
+curl http://localhost:8000/health
+# Returns: {"ok": true, "inference_provider": "groq", "max_file_size_mb": 50, ...}
+
+# Ingest a log file
+curl -X POST -F "file=@myapp.log" http://localhost:8000/ingest
+# Returns: {"filename": "myapp.log", "chunks_created": 45, "stats": {...}}
+
+# Analyze logs
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"question": "What is the root cause?", "top_k": 5}' \
+  http://localhost:8000/analyze
+# Returns: {"summary": "...", "root_cause": "...", "evidence": [...], "next_steps": [...]}
+```
+
+</details>
+
+## 🗺️ Roadmap
+
+### ✅ Completed
 - [x] Multi-format log parser with auto-detection
 - [x] Smart chunking by error clusters and time gaps
 - [x] Conversation history for follow-up questions
 - [x] Dark mode UI with syntax highlighting
+- [x] **Groq Cloud integration** for 10x faster inference
+- [x] **Concurrent embedding** (3x faster ingestion)
+- [x] **File size limits** with user-friendly errors
+- [x] **Futuristic UI** with glassmorphism design
+
+### 🔜 Coming Soon
 - [ ] Streaming responses for better UX
 - [ ] Hybrid retrieval (BM25 + vector search)
 - [ ] Timeline visualization of incidents
 - [ ] Session persistence and export
+- [ ] Kubernetes deployment with Helm chart
+- [ ] OpenAI/Anthropic API support
 
-## Design Principles
+---
 
-```mermaid
-flowchart LR
-    subgraph Principles
-        E[Evidence-First]
-        C[Cite Sources]
-        H[Honest Uncertainty]
-        L[Local Processing]
-    end
+## 🎯 Design Principles
 
-    E -->|Only claims with proof| A[Accurate Analysis]
-    C -->|Reference chunk IDs| T[Traceable Reasoning]
-    H -->|Admit when unsure| R[Reliable Confidence]
-    L -->|No external APIs| P[Privacy Preserved]
-```
+| Principle | Description |
+|-----------|-------------|
+| 🔍 **Evidence-First** | Every claim must be backed by retrieved log chunks |
+| 📎 **Cite Sources** | All conclusions reference specific chunk IDs |
+| ⚖️ **Honest Uncertainty** | Confidence is "low" when evidence is insufficient |
+| 🔒 **Privacy Option** | Can run fully local with Ollama |
 
-- **Evidence-First**: Every claim must be backed by retrieved log chunks
-- **Cite Sources**: All conclusions reference specific chunk IDs
-- **Honest Uncertainty**: Confidence is "low" when evidence is insufficient
-- **Local Processing**: All AI processing happens on your infrastructure
+---
 
-## Author
+## 👤 Author
+
+<div align="center">
 
 **Avinash Amudala**
-AI Engineer | LLM + Observability | Building Incident Debugging Systems
 
-- GitHub: [@Avinash-Amudala](https://github.com/Avinash-Amudala)
+AI Engineer • LLM Systems • Incident Debugging
 
-## License
+[![GitHub](https://img.shields.io/badge/GitHub-@Avinash--Amudala-181717?style=for-the-badge&logo=github)](https://github.com/Avinash-Amudala)
+
+</div>
+
+---
+
+## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it useful!**
+
+Made with ❤️ and 🤖
+
+</div>

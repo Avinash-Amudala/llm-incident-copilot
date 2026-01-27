@@ -45,19 +45,44 @@ export default function UploadPanel({ onIngest }) {
     <div className="panel">
       <h3 className="panel-header">📁 Upload Logs</h3>
 
-      {/* File input */}
-      <div style={{ marginBottom: "16px" }}>
+      {/* File input with drag zone styling */}
+      <div style={{
+        marginBottom: "18px",
+        padding: "24px",
+        border: "2px dashed var(--border-color)",
+        borderRadius: "14px",
+        textAlign: "center",
+        background: "var(--bg-secondary)",
+        transition: "all 0.3s ease"
+      }}>
+        <div style={{ marginBottom: "12px", fontSize: "2rem" }}>📄</div>
         <input
           type="file"
           accept=".log,.txt,.json"
           onChange={handleFileChange}
           className="input"
-          style={{ padding: "8px" }}
+          style={{
+            padding: "10px",
+            background: "transparent",
+            border: "none"
+          }}
         />
-        {file && (
-          <div style={{ marginTop: "8px", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-            Selected: <strong>{file.name}</strong> ({(file.size / 1024).toFixed(1)} KB)
+        {file ? (
+          <div style={{
+            marginTop: "12px",
+            fontSize: "0.9rem",
+            color: "var(--text-primary)",
+            fontWeight: "500"
+          }}>
+            ✅ <strong>{file.name}</strong>
+            <span style={{ color: "var(--text-muted)", marginLeft: "8px" }}>
+              ({file.size > 1048576 ? (file.size / 1048576).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB"})
+            </span>
           </div>
+        ) : (
+          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "8px" }}>
+            Supports .log, .txt, .json files up to 50MB
+          </p>
         )}
       </div>
 
@@ -69,11 +94,11 @@ export default function UploadPanel({ onIngest }) {
         style={{ width: "100%" }}
       >
         {isLoading ? (
-          <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-            <div className="spinner"></div> Processing...
+          <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+            <div className="spinner"></div> Analyzing with AI...
           </span>
         ) : (
-          "Ingest Log File"
+          "🚀 Analyze Log File"
         )}
       </button>
 

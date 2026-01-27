@@ -50,23 +50,27 @@ export default function ChatPanel({ ingestInfo }) {
 
   return (
     <div className="panel">
-      <h3 className="panel-header">💬 Ask a Question</h3>
+      <h3 className="panel-header">🤖 AI Analysis</h3>
 
       {/* Context indicator */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: "12px"
+        marginBottom: "16px",
+        padding: "12px 16px",
+        background: "var(--bg-secondary)",
+        borderRadius: "12px",
+        border: "1px solid var(--border-color)"
       }}>
-        <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+        <span style={{ fontSize: "0.9rem", color: ingestInfo ? "var(--success)" : "var(--text-muted)" }}>
           {ingestInfo
-            ? `📄 ${ingestInfo.filename} (${ingestInfo.chunks_created} chunks)`
-            : "No logs ingested yet — upload a file first"}
+            ? `✅ ${ingestInfo.filename} • ${ingestInfo.chunks_created} chunks ready`
+            : "⏳ Waiting for log file..."}
         </span>
         {conversationId && (
-          <button className="btn btn-secondary" onClick={startNewConversation} style={{ padding: "4px 10px", fontSize: "0.8rem" }}>
-            New Chat
+          <button className="btn btn-secondary" onClick={startNewConversation} style={{ padding: "6px 14px", fontSize: "0.8rem" }}>
+            🔄 New Chat
           </button>
         )}
       </div>
@@ -77,26 +81,28 @@ export default function ChatPanel({ ingestInfo }) {
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="e.g., Why are requests timing out? What error patterns do you see?"
+        placeholder="💡 Ask anything about your logs...&#10;&#10;Examples:&#10;• What is the root cause of these errors?&#10;• Show me the error timeline&#10;• Why are connections being dropped?"
         disabled={isLoading}
+        style={{ minHeight: "140px" }}
       />
 
-      <div style={{ marginTop: "12px", display: "flex", gap: "12px", alignItems: "center" }}>
+      <div style={{ marginTop: "16px", display: "flex", gap: "14px", alignItems: "center" }}>
         <button
           onClick={handleAnalyze}
           disabled={!question.trim() || isLoading}
           className="btn"
+          style={{ padding: "14px 28px" }}
         >
           {isLoading ? (
-            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <div className="spinner"></div> Analyzing...
+            <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div className="spinner"></div> AI is thinking...
             </span>
           ) : (
-            "Analyze Logs"
+            "🔍 Analyze"
           )}
         </button>
         <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-          Ctrl+Enter to submit
+          ⌘+Enter to submit
         </span>
       </div>
 
