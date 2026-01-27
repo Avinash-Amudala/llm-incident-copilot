@@ -1,13 +1,15 @@
 # LLM Incident Copilot - Docker Compose Configuration
 #
-# SETUP OPTIONS:
-# 1. Local Ollama (recommended): Install Ollama on your machine, then run docker compose up
-# 2. Docker Ollama: Uncomment the ollama service below if you want to run Ollama in Docker
+# INFERENCE OPTIONS (choose one):
+# 1. Groq Cloud (FASTEST - recommended): Set GROQ_API_KEY below
+#    - Free tier: https://console.groq.com/keys
+#    - 500+ tokens/sec, no GPU needed
+# 2. Local Ollama: Install Ollama on your machine
+#    - Run: ollama pull nomic-embed-text && ollama pull llama3.2:3b
+# 3. Docker Ollama: Uncomment ollama service below
 #
-# REQUIRED MODELS (run these before starting):
+# REQUIRED FOR EMBEDDINGS (always needed):
 #   ollama pull nomic-embed-text   # For embeddings (274 MB)
-#   ollama pull llama3.2:3b        # For analysis - works on 4GB+ VRAM (2 GB)
-#   OR: ollama pull llama3.1       # For analysis - needs 8GB+ VRAM (4.7 GB)
 
 services:
   qdrant:
@@ -39,12 +41,19 @@ services:
     environment:
       - QDRANT_URL=http://qdrant:6333
       - COLLECTION_NAME=log_chunks
-      # For local Ollama: use host.docker.internal
-      # For Docker Ollama: change to http://ollama:11434
+      # Ollama settings (for embeddings, always required)
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      # Model options: llama3.2:3b (4GB VRAM), llama3.1 (8GB+ VRAM), mistral (8GB VRAM)
-      - OLLAMA_MODEL=llama3.2:3b
       - OLLAMA_EMBED_MODEL=nomic-embed-text
+      # LLM options: llama3.2:3b (4GB VRAM), llama3.1 (8GB+ VRAM)
+      - OLLAMA_MODEL=llama3.2:3b
+      # GROQ CLOUD (optional but recommended - much faster!)
+      # Get free API key at: https://console.groq.com/keys
+      # Uncomment and add your key for 10x faster responses:
+      # - GROQ_API_KEY=gsk_your_key_here
+      # - GROQ_MODEL=llama-3.1-8b-instant
+      # Performance settings
+      - MAX_CHUNKS=50
+      - EMBEDDING_CONCURRENCY=5
       - STORAGE_DIR=/app/storage
       - CORS_ORIGINS=http://localhost:5173
     volumes:
@@ -53,7 +62,6 @@ services:
       - "8000:8000"
     depends_on:
       - qdrant
-    # Required for connecting to host machine's Ollama (works on Windows, Mac, and Linux)
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
