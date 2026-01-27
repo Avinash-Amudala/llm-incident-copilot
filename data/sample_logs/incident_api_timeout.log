@@ -1,0 +1,10 @@
+2026-01-26 10:12:00 INFO  api-gateway request_id=ab1 route=/recommendations latency_ms=120
+2026-01-26 10:12:01 WARN  api-gateway request_id=ab2 route=/recommendations latency_ms=4500 downstream=ml-service
+2026-01-26 10:12:01 ERROR api-gateway request_id=ab2 error="upstream timeout" timeout_ms=5000
+2026-01-26 10:12:02 INFO  ml-service batch=17 status="embedding started" items=512
+2026-01-26 10:12:10 WARN  ml-service batch=17 status="embedding complete" elapsed_ms=8000
+2026-01-26 10:12:11 ERROR ml-service error="db pool exhausted" pool_size=10 active=10 waiting=42
+2026-01-26 10:12:12 WARN  ml-service retrying=1 backoff_ms=500
+2026-01-26 10:12:13 ERROR ml-service error="db pool exhausted" pool_size=10 active=10 waiting=45
+2026-01-26 10:12:14 ERROR api-gateway request_id=ab3 error="upstream timeout" timeout_ms=5000
+

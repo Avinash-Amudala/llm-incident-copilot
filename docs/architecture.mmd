@@ -1,0 +1,11 @@
+flowchart LR
+  U[User / UI] -->|Question| API[FastAPI Backend]
+  U -->|Upload logs| API
+  API -->|Chunk + metadata| CH[Chunker]
+  CH -->|Embeddings| EMB[Ollama Embeddings]
+  EMB -->|Vectors| Q[Qdrant Vector DB]
+  API -->|Top-K chunks| Q
+  API -->|Evidence context| LLM[Ollama LLM]
+  LLM -->|Answer + citations| API
+  API --> U
+

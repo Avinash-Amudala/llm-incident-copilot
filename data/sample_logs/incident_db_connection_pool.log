@@ -1,0 +1,11 @@
+2026-01-26 14:30:00 INFO  order-service request_id=ord-001 action="checkout started" user_id=u123
+2026-01-26 14:30:01 INFO  order-service request_id=ord-001 action="inventory check" items=3
+2026-01-26 14:30:02 WARN  db-pool connection_wait_ms=2500 pool_size=20 active=20
+2026-01-26 14:30:03 ERROR order-service request_id=ord-001 error="connection timeout" db_host=primary-db.internal
+2026-01-26 14:30:04 WARN  db-pool connections_exhausted=true queued_requests=15
+2026-01-26 14:30:05 ERROR payment-service request_id=pay-001 error="transaction failed" reason="db unavailable"
+2026-01-26 14:30:06 INFO  db-pool action="scaling pool" new_size=40 reason="exhaustion detected"
+2026-01-26 14:30:07 WARN  order-service request_id=ord-002 action="retry checkout" attempt=2
+2026-01-26 14:30:08 INFO  db-pool pool_healthy=true active=25 available=15
+2026-01-26 14:30:09 INFO  order-service request_id=ord-001 action="checkout completed" latency_ms=9000
+

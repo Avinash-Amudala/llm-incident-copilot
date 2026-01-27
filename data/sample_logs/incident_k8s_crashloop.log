@@ -1,0 +1,13 @@
+2026-01-26 08:00:00 INFO  kubelet pod=auth-service-7d8f9c-abc12 status=Pending
+2026-01-26 08:00:05 INFO  kubelet pod=auth-service-7d8f9c-abc12 status=Running container=auth-main
+2026-01-26 08:00:10 ERROR auth-service startup_error="config file not found" path=/etc/auth/config.yaml
+2026-01-26 08:00:10 ERROR kubelet pod=auth-service-7d8f9c-abc12 event=ContainerDied exit_code=1
+2026-01-26 08:00:15 WARN  kubelet pod=auth-service-7d8f9c-abc12 status=CrashLoopBackOff restart_count=1
+2026-01-26 08:00:45 INFO  kubelet pod=auth-service-7d8f9c-abc12 action="restarting container"
+2026-01-26 08:00:50 ERROR auth-service startup_error="config file not found" path=/etc/auth/config.yaml
+2026-01-26 08:00:50 ERROR kubelet pod=auth-service-7d8f9c-abc12 event=ContainerDied exit_code=1
+2026-01-26 08:01:00 WARN  kubelet pod=auth-service-7d8f9c-abc12 status=CrashLoopBackOff restart_count=2 backoff_ms=20000
+2026-01-26 08:01:05 ERROR deployment auth-service replicas_available=0 replicas_desired=3
+2026-01-26 08:01:10 WARN  hpa auth-service unable_to_scale reason="no healthy pods"
+2026-01-26 08:01:15 ERROR ingress auth-service backend_unavailable=true health_check=failed
+
