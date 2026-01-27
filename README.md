@@ -196,20 +196,24 @@ Get 10x faster inference with Groq's free API:
 git clone https://github.com/Avinash-Amudala/llm-incident-copilot.git
 cd llm-incident-copilot
 
-# 2. Get free Groq API key from https://console.groq.com/keys
+# 2. Set up environment variables
+cp .env.example .env
 
-# 3. Add to docker-compose.yml under backend > environment:
-#    - GROQ_API_KEY=gsk_your_key_here
-#    - GROQ_MODEL=llama-3.1-8b-instant
+# 3. Get your FREE Groq API key
+#    Visit: https://console.groq.com/keys
+#    Then add to .env:
+#    GROQ_API_KEY=gsk_your_key_here
 
-# 4. Install Ollama for embeddings only
+# 4. Install Ollama for embeddings (required)
 ollama pull nomic-embed-text
 
-# 5. Start!
+# 5. Start the application!
 docker compose up --build
 ```
 
 ### Option B: Fully Local (🔒 Privacy-First)
+
+No external APIs - everything runs on your machine:
 
 ```bash
 # 1. Install Ollama from https://ollama.com/download
@@ -219,6 +223,11 @@ ollama pull llama3.2:3b         # LLM (2 GB) - works on 4GB VRAM
 # 2. Clone and start
 git clone https://github.com/Avinash-Amudala/llm-incident-copilot.git
 cd llm-incident-copilot
+
+# 3. Set up environment (no Groq key needed)
+cp .env.example .env
+
+# 4. Start!
 docker compose up --build
 ```
 
@@ -256,27 +265,54 @@ docker compose up --build
 | `llama3.2:3b` | 4GB+ | 🌟 | Ollama |
 | `llama3.1` | 8GB+ | 🌟🌟 | Ollama |
 
-### Environment Variables
+### Environment Setup (.env File)
 
-```yaml
-# docker-compose.yml
-backend:
-  environment:
-    # Groq Cloud (optional - enables fast inference)
-    - GROQ_API_KEY=gsk_your_key_here
-    - GROQ_MODEL=llama-3.1-8b-instant
+The project uses a `.env` file for configuration. This keeps your API keys secure and out of git:
 
-    # Ollama (default for embeddings, fallback for LLM)
-    - OLLAMA_BASE_URL=http://host.docker.internal:11434
-    - OLLAMA_MODEL=llama3.2:3b
+```bash
+# Create your local .env file from the template
+cp .env.example .env
 
-    # Performance tuning
-    - MAX_CHUNKS=50              # Max chunks to process
-    - EMBEDDING_CONCURRENCY=5   # Parallel embedding workers
+# Edit .env and add your Groq API key
+# (The .env file is gitignored - your secrets are safe)
+```
 
-    # File limits
-    - MAX_FILE_SIZE_MB=50       # Reject files larger than this
-    - WARN_FILE_SIZE_MB=10      # Warn for files larger than this
+**Example `.env` file:**
+
+```bash
+# 🚀 GROQ CLOUD (RECOMMENDED) - Get free key at https://console.groq.com/keys
+GROQ_API_KEY=gsk_your_key_here
+GROQ_MODEL=llama-3.1-8b-instant
+
+# 🦙 OLLAMA (always required for embeddings)
+OLLAMA_BASE_URL=http://host.docker.internal:11434
+OLLAMA_EMBED_MODEL=nomic-embed-text
+OLLAMA_MODEL=llama3.2:3b
+
+# ⚡ PERFORMANCE
+MAX_CHUNKS=50
+EMBEDDING_CONCURRENCY=5
+
+# 📁 FILE LIMITS
+MAX_FILE_SIZE_MB=50
+WARN_FILE_SIZE_MB=10
+```
+
+### All Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `GROQ_API_KEY` | *(empty)* | Groq API key for fast cloud inference |
+| `GROQ_MODEL` | `llama-3.1-8b-instant` | Groq model to use |
+| `OLLAMA_BASE_URL` | `http://host.docker.internal:11434` | Ollama server URL |
+| `OLLAMA_MODEL` | `llama3.2:3b` | Ollama model for LLM (fallback) |
+| `OLLAMA_EMBED_MODEL` | `nomic-embed-text` | Ollama model for embeddings |
+| `MAX_CHUNKS` | `50` | Max chunks to process per file |
+| `EMBEDDING_CONCURRENCY` | `5` | Parallel embedding workers |
+| `MAX_FILE_SIZE_MB` | `50` | Reject files larger than this (MB) |
+| `WARN_FILE_SIZE_MB` | `10` | Warn for files larger than this (MB) |
+| `INFERENCE_PROVIDER` | `auto` | Force provider: `auto`, `groq`, or `ollama` |
+
 ---
 
 ## 🔧 Troubleshooting
