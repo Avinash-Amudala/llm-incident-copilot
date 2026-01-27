@@ -23,42 +23,21 @@
 
 > **Upload a log file → Ask a question → Get a root-cause hypothesis + evidence citations + next steps**
 
-<!-- DEMO GIF SUGGESTIONS:
-1. demo-upload.gif - Show dragging a log file and watching it process
-2. demo-analysis.gif - Ask "What is the root cause?" and show the AI response
-3. demo-dark-mode.gif - Toggle between light and dark themes
-4. demo-evidence.gif - Show clicking through evidence citations
--->
+### 📁 Upload & Analyze Logs
 
-### 📸 Screenshots
+<p align="center">
+  <img src="upload-logfile.gif" alt="Upload and analyze log files" width="800">
+</p>
 
-| Upload & Analyze | AI Response with Evidence | Dark Mode |
-|:---:|:---:|:---:|
-| ![Upload](docs/screenshots/upload.png) | ![Analysis](docs/screenshots/analysis.png) | ![Dark Mode](docs/screenshots/dark-mode.png) |
+*Drag and drop any log file • Smart parsing detects format automatically • See processing stats in real-time*
 
-<details>
-<summary>📹 <b>GIF Recording Ideas</b> (click to expand)</summary>
+### 🤖 AI-Powered Root Cause Analysis
 
-Record these GIFs to showcase the app:
+<p align="center">
+  <img src="askAI.gif" alt="AI response with evidence" width="800">
+</p>
 
-1. **🚀 Quick Demo (15-20 sec)**
-   - Upload Zookeeper.log → Type "What's failing?" → Show AI analysis
-
-2. **📁 File Upload Flow (10 sec)**
-   - Drag file onto upload zone → Watch progress → See stats (lines, errors, chunks)
-
-3. **🤖 AI Analysis in Action (15 sec)**
-   - Type question → Submit → Watch AI thinking animation → Show structured response
-
-4. **🌙 Theme Toggle (5 sec)**
-   - Click moon icon → Smooth transition → All components adapt
-
-5. **📊 Evidence Cards (10 sec)**
-   - Hover over evidence cards → Show log snippets with syntax highlighting
-
-**Tools to record**: [ScreenToGif](https://www.screentogif.com/), [Gifski](https://gif.ski/), [LICEcap](https://www.cockos.com/licecap/)
-
-</details>
+*Ask natural language questions • Get evidence-backed answers • Actionable next steps*
 
 ---
 
