@@ -29,9 +29,15 @@ yarn-error.log
 *.swp
 *.swo
 
-# Docker logs (but allow sample data)
+# Log files (but allow sample data)
 *.log
 !data/sample_logs/*.log
+
+# LogHub datasets (too large for git, see data/logs/loghub/README.md)
+data/logs/loghub/**/*.log
+data/logs/loghub/**/*.tar.gz
+data/logs/loghub/**/*.zip
+data/logs/loghub/**/application_*/
 
 # OS
 .DS_Store
@@ -39,4 +45,3 @@ Thumbs.db
 
 # Storage
 storage/
-
