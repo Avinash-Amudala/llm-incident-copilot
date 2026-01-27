@@ -32,9 +32,9 @@ flowchart TB
         FS[File Storage]
     end
 
-    subgraph AI["AI Services"]
-        EMB[Embeddings Model]
-        LLM[LLM - llama3.1]
+    subgraph AI["AI Services - Ollama"]
+        EMB[nomic-embed-text]
+        LLM[llama3.2:3b or llama3.1]
     end
 
     UI -->|Upload logs| API
@@ -104,21 +104,29 @@ flowchart LR
 
 ## Quickstart
 
-### 1. Clone and start
+### Prerequisites
+
+- **Docker** and **Docker Compose** installed
+- **Ollama** installed locally ([download here](https://ollama.com/download))
+- **GPU** (optional but recommended): 4GB+ VRAM for faster inference
+
+### 1. Install Ollama and pull models
+
+```bash
+# Install Ollama from https://ollama.com/download
+# Then pull the required models:
+ollama pull nomic-embed-text    # Embeddings model (274 MB)
+ollama pull llama3.2:3b         # LLM for analysis (2 GB) - works on 4GB VRAM
+# OR for better quality (requires 8GB+ VRAM):
+# ollama pull llama3.1          # (4.7 GB)
+```
+
+### 2. Clone and start
 
 ```bash
 git clone https://github.com/Avinash-Amudala/llm-incident-copilot.git
 cd llm-incident-copilot
 docker compose up --build
-```
-
-### 2. Pull the LLM models (one-time setup)
-
-In a new terminal:
-
-```bash
-docker exec -it llm-incident-copilot-ollama-1 ollama pull llama3.1
-docker exec -it llm-incident-copilot-ollama-1 ollama pull nomic-embed-text
 ```
 
 ### 3. Open the app
@@ -131,6 +139,73 @@ docker exec -it llm-incident-copilot-ollama-1 ollama pull nomic-embed-text
 1. Upload a sample log from `data/sample_logs/`
 2. Ask: *"Why are requests timing out?"*
 3. Get evidence-based debugging guidance
+
+## Model Selection Guide
+
+Choose based on your GPU VRAM:
+
+| Model | VRAM Required | Quality | Download |
+|-------|---------------|---------|----------|
+| `llama3.2:3b` | 4GB+ | Good | `ollama pull llama3.2:3b` |
+| `llama3.1` | 8GB+ | Better | `ollama pull llama3.1` |
+| `mistral` | 8GB+ | Good | `ollama pull mistral` |
+
+To change the model, edit `docker-compose.yml`:
+```yaml
+- OLLAMA_MODEL=llama3.2:3b  # Change this line
+```
+
+## Troubleshooting
+
+### Corporate Network / Proxy Issues
+
+If you're behind a corporate proxy with SSL inspection:
+
+**For Docker builds (pip SSL errors):**
+The Dockerfile already includes `--trusted-host` flags to bypass SSL verification.
+
+**For Ollama model downloads:**
+```bash
+# Temporarily disable proxy
+# Windows PowerShell:
+$env:HTTP_PROXY = ""
+$env:HTTPS_PROXY = ""
+$env:NO_PROXY = "*"
+ollama pull llama3.2:3b
+
+# Linux/Mac:
+HTTP_PROXY="" HTTPS_PROXY="" ollama pull llama3.2:3b
+```
+
+### Port Conflicts
+
+If port 11434 is already in use:
+```bash
+# Check what's using the port
+# Windows:
+netstat -ano | findstr "11434"
+# Linux/Mac:
+lsof -i :11434
+
+# Kill the process if needed
+# Windows:
+taskkill /PID <pid> /F
+# Linux/Mac:
+kill -9 <pid>
+```
+
+### Running Ollama in Docker (Alternative Setup)
+
+If you prefer to run Ollama inside Docker instead of locally:
+
+1. Edit `docker-compose.yml` and uncomment the `ollama` service section
+2. Change `OLLAMA_BASE_URL` from `host.docker.internal` to `ollama`
+3. Run `docker compose up --build`
+4. Pull models inside the container:
+```bash
+docker exec -it llm-incident-copilot-ollama-1 ollama pull llama3.2:3b
+docker exec -it llm-incident-copilot-ollama-1 ollama pull nomic-embed-text
+```
 
 ## How It Works
 
