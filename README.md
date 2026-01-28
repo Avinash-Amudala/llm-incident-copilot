@@ -13,6 +13,8 @@
 
 **Upload logs → Ask questions → Get evidence-backed debugging guidance in seconds**
 
+📖 **Deep-dive blog:** [Designing an LLM-Powered Incident Copilot](https://avinash-amudala.github.io/posts/llm-incident-copilot)
+
 [Features](#-features) • [Quick Start](#-quickstart) • [Demo](#-demo) • [Performance](#-performance) • [Architecture](#system-architecture)
 
 </div>
